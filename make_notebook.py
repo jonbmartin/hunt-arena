@@ -9,7 +9,7 @@ import json, os
 # Where participants upload their .npz. Make a Google Form with a single
 # File upload question, then paste its link here and re-run this script.
 # Until it is set, the notebook tells people to ask you for the link.
-FORM_URL = "PASTE_YOUR_GOOGLE_FORM_LINK_HERE"
+FORM_URL = "https://forms.gle/omakKjbGMsEQjTQSA"
 
 MD = lambda s: {"cell_type": "markdown", "metadata": {}, "source": s.strip("\n").splitlines(True)}
 CODE = lambda s: {"cell_type": "code", "metadata": {}, "execution_count": None,

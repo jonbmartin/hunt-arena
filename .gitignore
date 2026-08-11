@@ -1,0 +1,25 @@
+# Your slides are not part of the workshop repo, and the repo has to be public
+# for Colab to clone it. Keep them out.
+presentation/
+
+# Working notes and facilitator material, kept locally rather than published
+# with the exercise. HOSTING.md in particular gives away the two discoveries
+# the session is built around.
+TASKS.md
+CLAUDE.md
+HOSTING.md
+
+# Participant submissions and your own test agents
+submissions/*.npz
+
+# Generated results
+race.html
+results.csv
+
+# A local clone of this same repo, used for testing the notebook's clone step
+arena/
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.~lock.*

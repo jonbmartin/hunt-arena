@@ -19,26 +19,29 @@ import numpy as np
 # ==========================================================================
 
 CONFIG = dict(
+    # The comment after each knob is the range worth exploring, not a hint at
+    # the answer. The ends are not automatically better -- some are much worse.
 
     # ---- how long you train ---------------------------------------------
-    # More is better but you only have so many minutes. 1M takes under two
-    # minutes on a Colab CPU, and this task is still improving at 2M.
-    total_timesteps=1_000_000,
+    # More is better but you only have so many minutes. 1M takes a couple of
+    # minutes on a Colab CPU, and this task is still improving at 2M. The
+    # SCORE column is often still climbing when training ends.
+    total_timesteps=1_000_000,   # 200_000 ... 3_000_000
 
     # ---- reward ----------------------------------------------------------
     # shaping_coef pays you every step for being close to the prey, on top of
     # the +1 for an actual catch. It makes learning much faster. It is also
     # not free -- catching the prey teleports it away from you. Try 0.0, try
     # 0.05, try 0.5, and watch what your agent actually does.
-    shaping_coef=0.05,
+    shaping_coef=0.05,   # 0.0 ... 0.5
 
     # Constant per-step reward. Negative values pressure you to hurry.
-    step_penalty=0.0,
+    step_penalty=0.0,    # -0.01 ... 0.0
 
     # ---- who you train against -------------------------------------------
     # Probability the prey ignores you and moves at random. You are ALWAYS
     # scored against a prey with noise 0.1, whatever you train against.
-    prey_noise=0.1,
+    prey_noise=0.1,      # 0.0 ... 0.5
 
     # ---- PPO -------------------------------------------------------------
     # These are a working point, not an optimum. The defaults below train an
@@ -46,15 +49,15 @@ CONFIG = dict(
     # past the third means changing something here, and the knobs are not
     # equally powerful -- one of them is worth more than all the others put
     # together on this task.
-    learning_rate=3e-4,
-    n_steps=2048,         # total rollout length before each update
-    batch_size=512,
-    n_epochs=10,
-    gamma=0.95,           # how far ahead you care
-    gae_lambda=0.95,
-    clip_range=0.2,
-    ent_coef=0.01,        # exploration pressure; 0 tends to collapse early
-    net_arch=[64, 64],
+    learning_rate=3e-4,  # 1e-4 ... 1e-2   above that it stops converging
+    n_steps=2048,        # 512 ... 8192    total rollout length before update
+    batch_size=512,      # 64 ... 2048     keep it a divisor of n_steps
+    n_epochs=10,         # 3 ... 20        passes over each batch of data
+    gamma=0.95,          # 0.90 ... 0.995  how far ahead you care
+    gae_lambda=0.95,     # 0.8 ... 1.0     bias/variance in the advantage
+    clip_range=0.2,      # 0.1 ... 0.4     how far one update may move you
+    ent_coef=0.01,       # 0.0 ... 0.05    exploration pressure
+    net_arch=[64, 64],   # [32,32] ... [256,256]
 
     n_envs=8,
     seed=0,

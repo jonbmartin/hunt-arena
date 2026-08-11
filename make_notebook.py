@@ -87,26 +87,31 @@ A few things worth knowing before you start turning knobs:
 
 CODE("""
 CONFIG = dict(
+    # The comment after each knob is the range worth exploring, not a hint at
+    # the answer. The ends are not automatically better -- some are much worse.
+
     # ---- how long you train ------------------------------------------------
-    total_timesteps=1_000_000,   # ~1.5 min. More is better, up to a point.
+    # A million steps is a couple of minutes. The SCORE curve is often still
+    # climbing when it ends, so check the first plot before you stop.
+    total_timesteps=1_000_000,   # 200_000 ... 3_000_000
 
     # ---- reward ------------------------------------------------------------
-    shaping_coef=0.05,   # per-step reward for being close. Try 0.0, 0.05, 0.5.
-    step_penalty=0.0,    # constant per-step reward. Negative = hurry up.
+    shaping_coef=0.05,   # 0.0 ... 0.5     per-step reward for being close
+    step_penalty=0.0,    # -0.01 ... 0.0   constant per-step reward
 
     # ---- who you practise against -----------------------------------------
-    prey_noise=0.1,      # chance the prey moves at random instead of fleeing
+    prey_noise=0.1,      # 0.0 ... 0.5     how often the prey ignores you
 
     # ---- PPO ---------------------------------------------------------------
-    learning_rate=3e-4,
-    n_steps=2048,        # rollout length before each update
-    batch_size=512,
-    n_epochs=10,
-    gamma=0.95,          # how far ahead you care
-    gae_lambda=0.95,
-    clip_range=0.2,
-    ent_coef=0.01,       # exploration pressure; 0 tends to collapse early
-    net_arch=[64, 64],
+    learning_rate=3e-4,  # 1e-4 ... 1e-2   above that it stops converging
+    n_steps=2048,        # 512 ... 8192    rollout length before each update
+    batch_size=512,      # 64 ... 2048     keep it a divisor of n_steps
+    n_epochs=10,         # 3 ... 20        passes over each batch of data
+    gamma=0.95,          # 0.90 ... 0.995  how far ahead you care
+    gae_lambda=0.95,     # 0.8 ... 1.0     bias/variance in the advantage
+    clip_range=0.2,      # 0.1 ... 0.4     how far one update may move you
+    ent_coef=0.01,       # 0.0 ... 0.05    exploration pressure
+    net_arch=[64, 64],   # [32,32] ... [256,256]
 
     n_envs=8,
     seed=0,
